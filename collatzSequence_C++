@@ -1,0 +1,179 @@
+// COPYRIGHTS.© ABANOB AYOUB
+//Description: This C++ code shows the longest collatz sequence and shows these term. It uses linked lists (nodes)
+
+
+#include <iostream>
+using namespace std;
+
+struct collatzNode {
+	int num; //item of the node
+	collatzNode* link; //link to another node
+};
+
+int main(){
+
+	//Declration
+	int userInput=0;
+	int biggestNumOfNodes =1;
+	int userNumToSave=0;
+
+	//Get user Input
+	cout << "Enter an Integer 100 or less: ";
+	cin >> userInput;
+
+	//Calculation
+	if (userInput == 1) {
+		cout << "The number 1 produces the longest Collatz sequence of 1 term." << endl << endl << "Here is the term" << endl << "1";
+	}
+	else if (userInput > 100 || userInput < 1) {
+		cout << "Invalid Input";
+	}
+	
+	else {
+		for (int i = 0; i < userInput - 1; userInput--) //outer loop goes over each number up to 1
+		{
+			collatzNode* head = new collatzNode; //create the head node
+			head->link = nullptr;
+
+			collatzNode* nextCollatzNode_1 = new collatzNode; //create the nextCollatzNode_1
+			nextCollatzNode_1 = head; //Set the nextCollatzNode_1 equal to the head
+
+			collatzNode* nextCollatzNode_2 = new collatzNode; //create the nextCollatzNode_2
+			nextCollatzNode_2 = head; //Set the nextCollatzNode_2 equal to the head
+
+			head->num = userInput;
+
+			int nodesCounter=1;
+
+			while (nextCollatzNode_1->num != 1) //nodes Claculation
+			{
+				nextCollatzNode_2->link = new collatzNode; //create a node at the end of the list
+				nextCollatzNode_2 = nextCollatzNode_2->link; //Assign the nextCollatzNode_2 to the new Node that you just created
+				nextCollatzNode_2->link = nullptr; //Assign nextCollatzNode_2's pointer "link" to null pointer, so now it's pointing to nullptr which is the end of the list
+
+				if (nextCollatzNode_1->num % 2 == 0) { //if nextCollatzNode_1 has an even number
+					nextCollatzNode_2->num = nextCollatzNode_1->num / 2;
+				}
+				else { //if nextCollatzNode has an odd number
+					nextCollatzNode_2->num = (3 * nextCollatzNode_1->num) + 1;
+				}
+
+				nextCollatzNode_1 = nextCollatzNode_2; //Set the nextCollatzNode_1 equal to the nextCollatzNode_2
+				nodesCounter += 1;
+			}
+
+			if (nodesCounter > biggestNumOfNodes) {
+				biggestNumOfNodes = nodesCounter;
+				userNumToSave = userInput;
+				//************************************delete the nodes************************************
+				if (head != nullptr) //if statement to delete the nextCollatzNode_1 & nextCollatzNode_2
+				{
+					nextCollatzNode_1 = head;
+					nextCollatzNode_2 = head;
+					head = head->link;
+					delete nextCollatzNode_1;
+					nextCollatzNode_1= nullptr;
+					nextCollatzNode_2 = nullptr;
+				}
+				while (head != nullptr) {
+					collatzNode* nodeToDelete = new collatzNode; //Create a new node "nodeToDelete"
+					nodeToDelete = head;
+					head = head->link;
+					delete nodeToDelete;
+					nodeToDelete = nullptr;
+				}
+				//After you delete all nodes using the previous loop,, now it's time to delete the head...
+				delete head;
+				head = nullptr; //************************************delete the nodes************************************
+			}
+
+			else {
+				//************************************delete the nodes************************************
+				if (head != nullptr) //if statement to delete the nextCollatzNode_1 & nextCollatzNode_2
+				{
+					nextCollatzNode_1 = head;
+					nextCollatzNode_2 = head;
+					head = head->link;
+					delete nextCollatzNode_1;
+					nextCollatzNode_1 = nullptr;
+					nextCollatzNode_2 = nullptr;
+				}
+				while (head != nullptr) {
+					collatzNode* nodeToDelete = new collatzNode; //Create a new node "nodeToDelete"
+					nodeToDelete = head;
+					head = head->link;
+					delete nodeToDelete;
+					nodeToDelete = nullptr;
+				}
+				//After you delete all nodes using the previous loop,, now it's time to delete the head...
+				delete head;
+				head = nullptr;  //************************************delete the nodes************************************
+			}
+		}
+	}
+	
+	
+	//Output
+	cout << "The number " << userNumToSave << " produces the longest Collatz sequence of " << biggestNumOfNodes << " terms."
+		<< endl << "Here are those terms:" << endl;
+	
+	//************Create a LinkedList for that number************
+	collatzNode* head = new collatzNode;
+	head->num = userNumToSave; //Set the head number to the number that produces the longest Collatz node
+	head->link = nullptr;
+	
+	collatzNode* nextCollatzNode_1 = new collatzNode; //create the nextCollatzNode_1
+	nextCollatzNode_1 = head; //Set the nextCollatzNode_1 equal to the head
+
+	collatzNode* nextCollatzNode_2 = new collatzNode; //create the nextCollatzNode_2
+	nextCollatzNode_2 = head; //Set the nextCollatzNode_2 equal to the head
+
+	while (nextCollatzNode_1->num != 1) {
+		nextCollatzNode_2->link = new collatzNode; //create a node at the end of the list
+		nextCollatzNode_2 = nextCollatzNode_2->link; //Assign the nextCollatzNode_2 to the new Node that you just created
+		nextCollatzNode_2->link = nullptr; //Assign nextCollatzNode_2's pointer "link" to null pointer, so now it's pointing to nullptr which is the end of the list
+
+		if (nextCollatzNode_1->num % 2 == 0) { //if nextCollatzNode_1 has an even number
+			nextCollatzNode_2->num = nextCollatzNode_1->num / 2;
+		}
+		else { //if nextCollatzNode has an odd number
+			nextCollatzNode_2->num = (3 * nextCollatzNode_1->num) + 1;
+		}
+		nextCollatzNode_1 = nextCollatzNode_2; //Set the nextCollatzNode_1 equal to the nextCollatzNode_2
+	}
+
+	nextCollatzNode_1 = head; //Set the nextCollatzNode_1 to go over each node and display its number
+	while (nextCollatzNode_1->link != nullptr) //Display the output node
+	{
+		cout << nextCollatzNode_1->num << "-> ";
+		nextCollatzNode_1 = nextCollatzNode_1->link;
+	}
+	cout << "1"<<endl; //Don't forget to display the 1
+
+
+	//************************************ delete the nodes ************************************
+	if (head != nullptr) //if statement to delete the nextCollatzNode_1 & nextCollatzNode_2
+	{
+		nextCollatzNode_1 = head;
+		nextCollatzNode_2 = head;
+		head = head->link;
+		delete nextCollatzNode_1;
+		nextCollatzNode_1 = nullptr;
+		nextCollatzNode_2 = nullptr;
+	}
+	while (head != nullptr) {
+		collatzNode* nodeToDelete = new collatzNode; //Create a new node "nodeToDelete"
+		nodeToDelete = head;
+		head = head->link;
+		delete nodeToDelete;
+		nodeToDelete = nullptr;
+	}
+	//After you delete all nodes using the previous loop,, now it's time to delete the head...
+	delete head;
+	head = nullptr;  //************************************delete the nodes************************************
+	
+	return 0;
+}//END
+
+// COPYRIGHTS.© ABANOB AYOUB
+// COPYRIGHTS.© ABANOB AYOUB
