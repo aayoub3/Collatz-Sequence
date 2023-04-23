@@ -1,5 +1,5 @@
 // COPYRIGHTS.© ABANOB AYOUB
-//Description: This C++ code shows the longest collatz sequence and shows these term. It uses linked lists (nodes)
+// Description: This C++ code shows the longest collatz sequence and shows these term. It uses linked lists (nodes)
 
 
 #include <iostream>
